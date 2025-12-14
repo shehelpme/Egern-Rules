@@ -1,0 +1,1237 @@
+
+#update：2025年12月14日13:03:11
+#使用方法：
+#第一步：Ctrl+A全选将此界面所有内容复制到本地用文本编辑器(记事本/Notepad++等)打开，一般是Ctrl+H组合键调出替换窗口，将“aiport01”、“aiport02”全部替换成你的机场名字即可！
+#第二步:将393行中url分别换成你的机场Clash订阅后导入即可！(特别注意：1.url的引号要保留;2.如果订阅下载不下来可以尝试在订阅后面加 &flag=clash)
+#update：2023.09.16
+#取消dns中的fallback参数，YouTube等外网打开有明显的提升
+#测试链接：http://captive.apple.com、http://www.msftconnecttest.com/connecttest.txt、http://detectportal.firefox.com/success.txt
+# 用于下载订阅时指定UA
+# global-ua: clash.meta
+
+# 网络端口设置
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7894
+ipv6: false
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: debug
+
+# 性能优化
+unified-delay: true
+tcp-concurrent: true
+# interface-name: eth0  （路由器下根据情况指定出站接口）
+
+# 认证设置（默认无密码）
+authentication:
+- "cat:cat"
+skip-auth-prefixes:
+- 127.0.0.1/8
+- ::1/128
+
+
+
+# GEO数据设置
+geodata-mode: false
+# GEO 文件加载模式（standard：标准加载器/memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)）
+geodata-loader: standard
+geo-auto-update: true
+geo-update-interval: 48 # 每 48 小时更新一次
+geox-url:
+  geosite: "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.metadb"
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+
+
+# 控制面板（如不需要可注释掉）
+external-controller: 127.0.0.1:9090 #限制控制面板只能从本地访问，如果设置为0.0.0.0:9090则允许局域网内的其他设备访问
+secret: "cat"
+#  密码设置cat
+external-ui: './external-ui'
+external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+# 下载面板地址可更换：https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
+# 第三方面板 
+#external-controller-cors:
+#  allow-origins:
+#    - 'https://zashboard.pages.dev'
+#    - 'https://board.zash.run.place'
+#  allow-private-network: true
+
+# 匹配进程
+find-process-mode: strict
+global-client-fingerprint: chrome
+keep-alive-idle: 600
+keep-alive-interval: 30
+# global-client-fingerprint: ios  # 伪装为 iOS 设备
+
+
+# 策略组选择和fakeip缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+  tracing: false #禁用Clash的网络请求追踪功能
+
+
+# 增强的流量嗅探设置（提高分流准确性）
+sniffer:
+  enable: true
+  force-dns-mapping: true  # 强制 DNS 映射，防止泄漏
+  parse-pure-ip: true      # 解析纯 IP 请求，提升分流准确性
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+      override-destination: true
+    QUIC:
+      ports: [443, 8443]
+      override-destination: true
+  force-domain:
+    - "*.v2ex.com"
+    - "dns.google"
+    - "cloudflare-dns.com"
+    - "dns.alidns.com"
+    - "doh.pub"
+  skip-domain:
+    - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "*.push.apple.com"
+    - "*.push.oppo.com"
+    - "*.apple.com"
+    - "*.wechat.com"
+    - "*.qpic.cn"
+    - "*.qq.com"
+    - "*.wechatapp.com"
+    - "*.vivox.com"
+    - "ipinfo.io"
+    - "*.ipinfo.io"
+    - "*.oray.com"
+    - "*.sunlogin.net"
+    - "*.bilibili.com"  # 新增，优化国内视频网站
+    - "*.iqiyi.com"
+    - "*.youku.com"
+    - "*.douyin.com"
+    - "*.taobao.com"   # 新增，优化电商网站
+    - "*.jd.com"  
+    - "*.liepin.com"  
+  skip-dst-address:
+    - '0.0.0.0/8'
+    - '10.0.0.0/8'
+    - '100.64.0.0/10'
+    - '127.0.0.0/8'
+    - '169.254.0.0/16'
+    - '172.16.0.0/12'
+    - '192.0.0.0/24'
+    - '192.0.2.0/24'
+    - '192.88.99.0/24'
+    - '192.168.0.0/16'
+    - '198.18.0.0/15'
+    - '198.51.100.0/24'
+    - '203.0.113.0/24'
+    - '224.0.0.0/3'
+    - '::/127'
+    - 'fc00::/7'
+    - 'fe80::/10'
+    - 'ff00::/8'
+
+
+# TUN模式设置（增强隐私保护）
+tun:
+  enable: true
+  stack: system #system\gvisor
+  mtu: 1420
+  dns-hijack:
+    - "any:53"
+    #- "tcp://any:53" 冗余
+    #- "udp://any:53"
+    - "tcp://any:853"
+    - "tcp://any:443"  # 拦截 DoH（确保 DoH 请求通过 Clash）
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  strict-route: true # 严格路由，防止DNS泄漏，可删
+  device: 'Cat'
+
+# 增强的DNS模块（隐私保护）
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  ipv6: false
+  prefer-h3: true
+  use-hosts: true
+  respect-rules: true
+  # 模式切换 redir-host / fake-ip
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: blacklist
+  # 模式切换 whitelist/blacklist 
+  # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
+
+  default-nameserver:
+    - tls://223.5.5.5 # 阿里 DoT
+    - tls://1.1.1.1            # Cloudflare DoT，主用，全球快速
+    - tls://9.9.9.9            # Quad9 DoT，备用，防恶意域名
+    - tls://223.6.6.6 # 阿里 DoT
+    #- https://1.1.1.1/dns-query  # Cloudflare DoH使用 443 端口，伪装为 HTTPS 流量，更难被屏蔽
+    #- https://dns.quad9.net/dns-query  # Quad9 DoH
+    #- 114.114.114.114  # 国内公共 DNS，中立稳定
+    #- 223.5.5.5 # 阿里公共 DNS
+    #- 119.29.29.29 #腾讯公共 DNS
+    #- 8.8.8.8  # 海外 DNS，隐私性好
+    #- 1.1.1.1  # 海外 DNS，隐私性好
+     
+  proxy-server-nameserver:
+    - https://sm2.doh.pub/dns-query    # 国内公益 DoH 后添加
+    - quic://dns.alidns.com/dns-query  # 低延迟，国内兼容 后添加
+    - https://dns.alidns.com/dns-query # 备用阿里 DNS
+    - 223.5.5.5  # 阿里公共 DNS
+    - 114.114.114.114  # 国内公共 DNS
+    - https://1.1.1.1/dns-query  # 海外 DNS，隐私性好
+    - https://dns.google/dns-query # 海外 DNS，隐私性好
+    
+  nameserver: #速度卡顿调节这里
+    #- https://sm2.doh.pub/dns-query  # 国内公益 DoH
+    #- https://dns.alidns.com/dns-query  # 阿里 DoH
+    - https://1.1.1.1/dns-query # Cloudflare，隐私强，速度快
+    - https://dns.adguard.com/dns-query # 优先AdGuard DNS (DoH)
+    - https://dns.google/dns-query # Google DNS  
+    #- https://doh.pub/dns-query          # DNSPod，国内备用，隐私稍好
+    #- https://223.5.5.5/dns-query         # 阿里DNS，仅备用，国内速度快  
+
+  fallback:
+    - tls://1.1.1.1:853  # Cloudflare DNS，隐私友好
+    - tls://8.8.8.8:853  # Google DNS over TLS
+  
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 0.0.0.0/8
+      - 10.0.0.0/8
+      - 172.16.0.0/12
+      - 192.168.0.0/16
+      - 240.0.0.0/4
+      - 223.5.5.5/32
+      - 114.114.114.114/32
+      - 175.6.51.50/32
+      - 175.6.51.51/32
+      - 127.0.0.0/8
+      - 169.254.0.0/16
+      - 192.0.0.0/24
+      - 192.0.2.0/24
+      - 192.88.99.0/24
+      - 198.18.0.0/15
+      - 198.51.100.0/24
+      - 203.0.113.0/24
+      - 224.0.0.0/4
+    domain:
+      - "+.google.com"
+      - "+.gstatic.com"
+      - "+.youtube.com"
+      - "+.github.com"
+      - "+.githubusercontent.com"
+      - "+.facebook.com"
+      - "+.twitter.com"
+      - "+.x.com"
+
+  nameserver-policy:
+    'geosite:private,cn,geolocation-cn':
+      - https://sm2.doh.pub/dns-query # 优先公益 DoH，减少阿里依赖
+      - https://dns.alidns.com/dns-query
+      - 223.5.5.5
+      - 119.29.29.29
+    'geosite:geolocation-!cn,gfw': 
+      - https://dns.google/dns-query
+      - https://1.1.1.1/dns-query
+    'domain:bilibili.com,*.bilibili.com,tieba.baidu.com,*.iqiyi.com,*.youku.com,*.douyin.com,*.taobao.com,*.jd.com,*.alipay.com,*.baidu.com,*.tencent.com,*.liepin.com,*.bilivideo.com,*.bdstatic.com':
+      - 114.114.114.114
+      - 223.5.5.5
+      - 119.29.29.29
+      - https://sm2.doh.pub/dns-query    # 显式指定国内高频域名
+      - https://dns.alidns.com/dns-query
+      #- 101.226.4.6   #360安全DNS
+    'geosite:telegram':
+      - tls://dns.google#Telegram
+      - tls://cloudflare-dns.com#Telegram
+      - https://dns.google/dns-query#Telegram
+      - https://1.1.1.1/dns-query#Telegram
+
+  # 增强的假IP过滤（防止DNS泄漏和提高分流准确性）
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - localhost.ptlogin2.qq.com
+    - time.*.com
+    - time.*.gov
+    - time.*.edu.cn
+    - time.*.apple.com
+    - time-ios.apple.com
+    - '+.srv.nintendo.net'
+    - '+.stun.playstation.net'
+    - '+.msftconnecttest.com'
+    - '+.msftncsi.com'
+    - '+.xboxlive.com'
+    - 'msftconnecttest.com'
+    - 'xbox.*.microsoft.com'
+    - '*.battlenet.com.cn'
+    - '*.battlenet.com'
+    - '*.blzstatic.cn'
+    - '*.battle.net'
+    - time1.*.com
+    - ntp.*.com
+    - "*.time.edu.cn"
+    - "*.ntp.org.cn"
+    - "*.pool.ntp.org"
+    - "+.services.googleapis.cn"
+    - "+.xn--ngstr-lra8j.com"
+    - "+.push.apple.com"
+    - 5ddd.com
+    - time1.cloud.tencent.com
+    # 增加隐私保护相关过滤
+    - "*.crashlytics.com"
+    - "*.googlesyndication.com"
+    - "*.doubleclick.net"
+    - "*.analytics.*"
+    - "tracking.*"
+    - "metrics.*"
+    - 'localhost.*.qq.com'
+    - 'tplogin.cn'
+    - 'routerlogin.com'
+    - 'router.asus.com'
+    - 'miwifi.com'
+    - 'luyou.360.cn'
+    - 'melogin.cn'
+    - 'tendawifi.com'
+    - 'jdcloudwifi.com'
+    - 'zte.home'
+    - 'p.to'
+    - '+.ntp.*'
+    - '+.ntp.*.*'
+    - '+.ntp*.*.*'
+    - '+.ntp.*.*.*'
+    - '+.ntp.*.*.*.*'
+    - '+.time.*'
+    - '+.time.*.*'
+    - '+.time*.*.*'
+    - '+.*time.*.*'
+    - '+.time.*.*.*'
+# 提取的规则集域名
+    - "*.icbc.com.cn"        # bank_cn_domain
+    - "*.ccb.com"            # bank_cn_domain
+    - "*.boc.cn"             # bank_cn_domain
+    - "*.abchina.com"        # bank_cn_domain
+    - "*.bankcomm.com"       # bank_cn_domain
+    - "*.cmbc.com.cn"        # bank_cn_domain
+    - "*.psbc.com"           # bank_cn_domain
+    - "*.weixin.qq.com"      # wechat_domain
+    - "*.wechat.com"         # wechat_domain
+    - "*.weixin.com"         # wechat_domain
+    - "*.tenpay.com"         # wechat_domain
+    - "*.baidu.com"          # ai_cn_domain, cn_domain
+    - "*.aliyun.com"         # ai_cn_domain, aliyun_domain
+    - "*.iflytek.com"        # ai_cn_domain
+    - "*.xunfei.cn"          # ai_cn_domain
+    - "*.netease.com"        # NetEaseMusic_domain
+    - "*.music.163.com"      # NetEaseMusic_domain
+    - "*.163.com"            # NetEaseMusic_domain
+    - "*.googleapis.com"     # fcm_domain
+    - "*.fcm.googleapis.com" # fcm_domain
+    - "*.firebaseio.com"     # fcm_domain
+    - "*.alibaba.com"        # alibaba_domain
+    - "*.taobao.com"         # alibaba_domain
+    - "*.tmall.com"          # alibaba_domain
+    - "*.aliexpress.com"     # alibaba_domain
+    - "*.bilibili.com"       # media_cn_domain
+    - "*.iqiyi.com"          # media_cn_domain
+    - "*.youku.com"          # media_cn_domain
+    - "*.tencent.com"        # media_cn_domain
+    - "*.douyin.com"         # media_cn_domain
+    - "*.xiaomi.com"         # xiaomi_domain
+    - "*.mi.com"             # xiaomi_domain
+    - "*.miui.com"           # xiaomi_domain
+    - "*.steampowered.com.cn" # steam_cn_domain
+    - "*.steamchina.com"     # steam_cn_domain
+    - "*.pttime.org"         # pt_cn_domain
+    - "*.hdsky.me"           # pt_cn_domain
+    - "*.ourbits.club"       # pt_cn_domain
+    - "*.opentracker.org"    # public-tracker_domain
+    - "*.publicbt.com"       # public-tracker_domain
+    - "*.openbittorrent.com" # public-tracker_domain
+    - "*.115.com"            # 115_domain
+    - "*.aliyuncs.com"       # aliyun_domain
+    - "*.jd.com"             # direct_domain
+    - "*.qq.com"             # direct_domain
+    - "*.apple.com.cn"       # apple_cn_domain
+    - "*.icloud.com.cn"      # apple_cn_domain
+    - "*.mesu.apple.com"     # apple_firmware_domain
+    - "*.appldnld.apple.com" # apple_firmware_domain
+    - "*.cntv.cn"            # iptv_domain
+    - "*.wasu.cn"            # iptv_domain
+    - "*.miptv.com"          # iptv_domain
+    - "*.com.cn"             # cn_domain
+    - "*.cn"                 # cn_domain
+
+
+hosts:
+  'trpc.o3.*': 127.0.0.1
+  'services.googleapis.cn': services.googleapis.com
+
+# 出站配置
+proxies:
+  - { name: 'dns-hijack', type: dns }
+
+#远程订阅
+proxy-providers:
+  AS_Subscription: &AS #建立锚点
+    type: http
+    url: "https://i.online/83e5"
+    interval: 86400
+    path: ./providers/proxy/AS.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: https://www.gstatic.com/generate_204
+    override:
+      additional-prefix: "AS-"
+      
+ 
+#clah  p核正则
+#   (A).*(B)         节点名既有 A 也有 B 
+#   (A)|(B)          节点名有 A 或者 B   
+#   ^(?!.*A)         节点名不含有 A 
+#   ^(?!.*A).*(B)    节点名不含有 A 但含有 B
+#   ^(?!.*(A|B))     节点名既不含有 A 也不含有 B
+
+#订阅正则提取分组
+#爱叔部分
+  AS_Filter_All:
+    <<: *AS
+
+#策略分组
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use: 
+      - AS_Filter_All           
+
+  - name: Linkedin
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use: 
+      - AS_Filter_All           
+
+  - name: Google
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use: 
+      - AS_Filter_All           
+
+  - name: Telegram
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use: 
+      - AS_Filter_All           
+
+  - name: OpenAI
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use: 
+      - AS_Filter_All           
+
+  - name: AS
+    type: select
+    use:        
+      - AS_Filter_All
+
+  - name: YouTube
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Whatsapp
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+      
+  - name: Twitter
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Instagram
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: TikTok
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Netflix
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Disney
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: HBO
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Spotify
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Apple
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Steam
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Emby
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Bilibili
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Microsoft
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+  - name: Download
+    type: select
+    proxies:
+      - DIRECT
+      - REJECT
+      - AS
+      - 🇭🇰 香港
+      - 🇹🇼 台湾
+      - 🇺🇸 美国
+      - 🇯🇵 日本
+      - 🇰🇷 韩国
+      - 🇸🇬 新加坡
+    use:   
+      - AS_Filter_All    
+
+
+  - name: 🇭🇰 香港
+    type: select
+    filter: (?i)香港|HK|Hong
+    use:   
+      - AS_Filter_All    
+
+  - name: 🇹🇼 台湾
+    type: select
+    filter: (?i)台(湾|灣)|TW|Taiwan
+    use:   
+      - AS_Filter_All    
+
+  - name: 🇯🇵 日本
+    type: select
+    filter: (?i)日本|川日|(东|東)京|大阪|泉日|埼玉|沪日|深日|JP|Japan|Tokyo
+    use:   
+      - AS_Filter_All    
+
+
+  - name: 🇰🇷 韩国
+    type: select
+    filter: (?i)KR|Korea|首尔|韩|韓|春川
+    use:   
+      - AS_Filter_All    
+
+
+  - name: 🇸🇬 新加坡
+    type: select
+    filter: (?i)狮|獅|加坡|SG|Singapore
+    use:   
+      - AS_Filter_All    
+
+
+  - name: 🇺🇸 美国
+    type: select
+    filter: (?i)美(国|國)|US|States|American|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|旧金山|佛罗里达州|芝加哥|Los|Angeles
+    use:   
+      - AS_Filter_All    
+
+
+# 远程规则集合
+rule-anchor:
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: yaml}
+  ip_text: &ip_text {type: http, interval: 86400, behavior: ipcidr, format: text}
+  ip_yaml: &ip_yaml {type: http, interval: 86400, behavior: ipcidr, format: yaml}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: yaml}
+  domain_text: &domain_text {type: http, interval: 86400, behavior: domain, format: text}
+  domain_yaml: &domain_yaml {type: http, interval: 86400, behavior: domain, format: yaml}
+  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+  class_yaml: &class_yaml {type: http, interval: 86400, behavior: classical, format: yaml}
+
+# clash-rules项目提供的规则集
+rule-providers:
+  # 高优先级服务 (LinkedIn, Telegram, Google)
+  linkedin:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/LinkedIn/LinkedIn.yaml"
+    path: ./profiles/rules/linkedin.yaml
+    interval: 86400
+    
+  linkedin_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/linkedin.yaml" }
+  telegram:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    path: ./profiles/rules/telegram.yaml
+    interval: 86400    
+    
+  google:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
+    path: ./profiles/rules/google.yaml
+    interval: 86400
+    
+  telegram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.yaml" }
+  google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/google.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  telegram_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.yaml" }
+  google_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.yaml" }
+  google_asn_cn: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/AS24424.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  googlevpn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/googleVPN.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+
+  # 基础规则
+  banAd_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/banAd.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.yaml" }
+  cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.yaml" }
+  cn_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.yaml" }
+  gfw_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.yaml" }
+  geolocation-!cn: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.yaml" }
+  proxy_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/proxy.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  direct_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/direct.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  applications:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
+    path: ./profiles/rules/applications.yaml
+    interval: 86400
+  
+  reject: { <<: *domain_text, url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt" }
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+    
+  # 社交媒体
+  instagram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/instagram.yaml" }
+  tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/tiktok.yaml" }
+  facebook_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/facebook.yaml" }
+  whatsapp_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/whatsapp.yaml" }
+  threads_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/threads.yaml" }
+  meta_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/meta.yaml" }
+  line_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/line.yaml" }
+  signal_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/signal.yaml" }
+  wechat_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/WeChat.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  discord_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/discord.yaml" }
+  talkatone_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/Talkatone-domain.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  media!cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-social-media-!cn.yaml" }
+  facebook_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geoip/facebook.yaml" }
+  twitter_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geoip/twitter.yaml" }
+  talkatone_ip: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/Talkatone-ip.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  discord_asn: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/AS49544.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  wechat_asn: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/AS132203.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+
+  # 流媒体
+  youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.yaml" }
+  youtubemusic:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTubeMusic/YouTubeMusic.yaml"
+    path: ./profiles/rules/youtubemusic.yaml
+    interval: 86400
+  
+  netflix_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.yaml" }
+  disney_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/disney.yaml" }
+  hbo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/hbo.yaml" }
+  primevideo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/primevideo.yaml" }
+  spotify_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/spotify.yaml" }
+  emby_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/emby.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  twitch_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/twitch.yaml" }
+  appleTV_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/appletv.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  TVB_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/tvb.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  iptv_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/iptv.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  bilibili_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/bilibili.yaml" }
+  biliintl_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/bilibili%40!cn.yaml" }
+  bahamut_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/bahamut.yaml" }
+  media_cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-media-cn.yaml" }
+  netflix_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.yaml" }
+  emby_ip: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/emby-ip.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+
+  # 电商
+  Amazon_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/amazon.yaml" }
+  Shopee_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/shopee.yaml" }
+  ebay_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/ebay.yaml" }
+  Shopify_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/shopify.yaml" }
+  Amazon_ip: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/amazon-ip.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+
+  # 游戏
+  steam_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/steam.yaml" }
+  steam_cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/steam%40cn.yaml" }
+  steamcdn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/Steam-domain.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  Epic_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/epicgames.yaml" }
+  EA_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/ea.yaml" }
+  Blizzard_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/blizzard.yaml" }
+  UBI_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/ubi.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  Sony_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/sony.yaml" }
+  Nintendo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/nintendo.yaml" }
+  steamcdn_ip: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/steamCDN-ip.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+
+  # 人工智能
+  openai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/openai.yaml" }
+  ai!cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-ai-!cn.yaml" }
+  ai_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/ai.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  claude:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml"
+    path: ./profiles/rules/claude.yaml
+    interval: 86400
+  
+  slack: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/slack.yaml" }
+  ai_cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-ai-cn.yaml" }
+  ai_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geoip/ai.yaml" }
+
+  # 科技公司
+  apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.yaml" }
+  applle:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
+    path: ./profiles/rules/applle.yaml
+    interval: 86400
+  
+  apple_cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/apple%40cn.yaml" }
+  apple_firmware_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/applefirmware.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  microsoft_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.yaml" }
+  onedrive_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.yaml" }
+  github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.yaml" }
+  Cloudflare_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/cloudflare.yaml" }
+  fcm_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/googlefcm.yaml" }
+  alibaba_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/alibaba.yaml" }
+  aliyun_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/aliyun.yaml" }
+  xiaomi_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/xiaomi.yaml" }
+
+  # 金融
+  paypal_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.yaml" }
+  Wise_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/wise.yaml" }
+  ifast_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/ifast.yaml" }
+  bank_cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-bank-cn.yaml" }
+
+  # 下载与文件分享
+  Download_rule:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Download/Download.yaml"
+    path: ./RuleSet/Download.yaml
+    interval: 86400
+    
+  115_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/115.yaml" }
+  pt_cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-pt.yaml" }
+  public-tracker_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-public-tracker.yaml" }
+  NetEaseMusic_domain: { <<: *domain, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/Domain/NetEaseMusic-domain.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+  NetEaseMusic_ip: { <<: *ip, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/refs/heads/main/rules/IP/NetEaseMusic-ip.yaml" } # 注意：未找到 .yaml，建议保留 .mrs 或找替代
+
+  # 其他
+  speedtest_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.yaml" }
+  gitbook_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/gitbook.yaml" }
+  porn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-porn.yaml" }
+
+# 分流规则
+rules:
+  
+  - PROCESS-PATH-REGEX,^D:\\Program Files\\Package\\brave\\current\\brave\.exe$,PROXY
+  
+# DNS 代理规则
+  - DOMAIN,dns.google,PROXY
+  - DOMAIN,dns.google.com,PROXY
+  - DOMAIN,cloudflare-dns.com,PROXY
+  - DOMAIN,adguard.com,PROXY
+  - DOMAIN,dns.adguard.com,PROXY
+  - DOMAIN,sm2.doh.pub,PROXY
+  - DOMAIN,dns.alidns.com,PROXY
+  - IP-CIDR,45.113.192.0/24,PROXY,no-resolve
+  - IP-CIDR,45.113.194.0/24,PROXY,no-resolve
+  - IP-CIDR,8.8.8.8/32,PROXY,no-resolve
+  - IP-CIDR,8.8.4.4/32,PROXY,no-resolve
+  - IP-CIDR,1.1.1.1/32,PROXY,no-resolve
+  - IP-CIDR,1.0.0.1/32,PROXY,no-resolve
+  - IP-CIDR,104.16.0.0/12,PROXY,no-resolve  # Cloudflare
+  - IP-CIDR,162.159.0.0/16,PROXY,no-resolve # Cloudflare
+  - IP-CIDR,172.64.0.0/13,PROXY,no-resolve  # Cloudflare
+  - IP-CIDR,173.194.0.0/16,PROXY,no-resolve # Google
+  - IP-CIDR,74.125.0.0/16,PROXY,no-resolve  # Google
+  - IP-CIDR,119.29.29.29/32,PROXY,no-resolve  # 腾讯 DNS
+  - IP-CIDR,223.5.5.5/32,PROXY,no-resolve    # 阿里 DNS
+  - IP-CIDR,114.114.114.114/32,PROXY,no-resolve # 114 DNS
+  - DST-PORT,53,PROXY,udp
+  - DST-PORT,53,PROXY,tcp
+  - DST-PORT,853,PROXY,tcp  # 捕获所有 DNS 请求
+  - IP-CIDR,175.6.51.50/32,PROXY,no-resolve #运营商IP
+  - IP-CIDR,175.6.51.51/32,PROXY,no-resolve
+
+
+  
+  # 高优先级服务 (LinkedIn, Telegram, Google)
+  #谷歌商店
+  - DOMAIN-SUFFIX,services.googleapis.cn,Google
+  - DOMAIN-SUFFIX,googleapis.cn,Google
+  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com,Google
+  - DOMAIN-SUFFIX,clientservices.googleapis.com,Google
+  
+  - DOMAIN,alt1-mtalk.google.com,DIRECT
+  - DOMAIN,alt2-mtalk.google.com,DIRECT
+  - DOMAIN,alt3-mtalk.google.com,DIRECT
+  - DOMAIN,alt4-mtalk.google.com,DIRECT
+  - DOMAIN,alt5-mtalk.google.com,DIRECT
+  - DOMAIN,alt6-mtalk.google.com,DIRECT
+  - DOMAIN,alt7-mtalk.google.com,DIRECT
+  - DOMAIN,alt8-mtalk.google.com,DIRECT
+  - DOMAIN,mtalk-dev.google.com,DIRECT
+  - DOMAIN,mtalk-staging.google.com,DIRECT
+  - DOMAIN,mtalk.google.com,DIRECT
+  - DOMAIN,mtalk4.google.com,DIRECT
+  - DOMAIN-SUFFIX,linkedin.com,Linkedin
+  - DOMAIN-SUFFIX,iphey.com,Linkedin
+  - DOMAIN,e122475.dscg.akamaiedge.net,Linkedin
+  - DOMAIN,licdn.cn.cdn20.com,Linkedin
+  - DOMAIN,linkedin.sc.omtrdc.net,Linkedin
+  - DOMAIN-SUFFIX,bizographics.com,Linkedin
+  - DOMAIN-SUFFIX,l-0005.dc-msedge.net,Linkedin
+  - DOMAIN-SUFFIX,l-0005.l-msedge.net,Linkedin
+  - DOMAIN-SUFFIX,licdn.cn,Linkedin
+  - DOMAIN-SUFFIX,licdn.com,Linkedin
+  - DOMAIN-SUFFIX,linkedin.at,Linkedin
+  - DOMAIN-SUFFIX,linkedin.cn,Linkedin
+  - DOMAIN-SUFFIX,linkedin.com,Linkedin
+  - DOMAIN-SUFFIX,lnkd.in,Linkedin
+  - DOMAIN-SUFFIX,bgp.he.net,Linkedin
+  - DOMAIN-SUFFIX,ping0.cc,Linkedin
+  - DOMAIN-SUFFIX,dnsleaktest.com,Linkedin
+  - DOMAIN-SUFFIX,91unicorn.cloud,Linkedin
+  - DOMAIN-SUFFIX,mylocation.org,Telegram
+  - DOMAIN-SUFFIX,ipleak.com,Telegram
+  - DOMAIN-SUFFIX,ipaddress.my,Telegram
+  - DOMAIN-SUFFIX,csun.edu,Google
+  - DOMAIN-SUFFIX,loseprivacy.net,Google
+  - DOMAIN-SUFFIX,textnow.com,Google
+  - DOMAIN-SUFFIX,us.skytiankongsky.top,Google
+  - DOMAIN-SUFFIX,nsloon.com,Google
+  - DOMAIN-SUFFIX,google.com,Google
+  - DOMAIN-KEYWORD,google,Google
+  - DOMAIN-SUFFIX,openai.com,Google
+  - DOMAIN-SUFFIX,ip123.in,Google
+  - DOMAIN-SUFFIX,scamalytics.com,Google
+  - DOMAIN-SUFFIX,ip-score.com,Google
+  - DOMAIN-SUFFIX,ipregistry.co,Google
+  - DOMAIN-SUFFIX,theb.ai,Google
+  - DOMAIN-SUFFIX,slack.com,Google
+  - DOMAIN,copilot.microsoft.com,OpenAI
+  - DOMAIN-SUFFIX,browserleaks.com,Google
+  - RULE-SET,linkedin,Linkedin
+  - RULE-SET,linkedin_domain,Linkedin
+  - RULE-SET,telegram,Telegram
+  - RULE-SET,telegram_domain,Telegram
+  - RULE-SET,telegram_ip,Telegram,no-resolve
+  - RULE-SET,google,Google
+  - RULE-SET,google_domain,Google
+  - RULE-SET,google_ip,Google,no-resolve
+  - RULE-SET,google_asn_cn,Google,no-resolve
+  - RULE-SET,googlevpn_domain,Google
+  - DOMAIN-SUFFIX,ticktick.com,Linkedin
+  - DOMAIN-SUFFIX,piclumen.com,PROXY
+  - DOMAIN-SUFFIX,discord.com,PROXY
+  
+  # 本地直连
+  - DOMAIN,clash.razord.top,DIRECT
+  - DOMAIN,yacd.haishan.me,DIRECT
+
+  # 拒绝规则
+  - DOMAIN-SUFFIX,get.sogou.com,REJECT
+  - DOMAIN-SUFFIX,shouji.sogou.com,REJECT
+  - DOMAIN-SUFFIX,account.sogou.com,REJECT
+  - DOMAIN-SUFFIX,pinyin.sogou.com,REJECT
+  - DOMAIN-SUFFIX,ime.sogou.com,REJECT
+  - DOMAIN-SUFFIX,macime.sogou.com,REJECT
+  - DOMAIN,otheve.beacon.qq.com,REJECT
+  - DOMAIN,oth.str.mdt.qq.com,REJECT
+  - RULE-SET,reject,REJECT
+  - RULE-SET,banAd_domain,REJECT
+
+  # 进程规则
+  - PROCESS-NAME,SogouInput,REJECT
+  - PROCESS-NAME,SOgouTaskManager,REJECT
+  - PROCESS-NAME,SogouServices,REJECT
+  - PROCESS-NAME,v2ray,DIRECT
+  - PROCESS-NAME,xray,DIRECT
+  - PROCESS-NAME,naive,DIRECT
+  - PROCESS-NAME,trojan,DIRECT
+  - PROCESS-NAME,trojan-go,DIRECT
+  - PROCESS-NAME,ss-local,DIRECT
+  - PROCESS-NAME,privoxy,DIRECT
+  - PROCESS-NAME,leaf,DIRECT
+  - PROCESS-NAME,Surge,DIRECT
+  - PROCESS-NAME,Surge 2,DIRECT
+  - PROCESS-NAME,Surge 3,DIRECT
+  - PROCESS-NAME,Surge 4,DIRECT
+  - PROCESS-NAME,Thunder,DIRECT
+  - PROCESS-NAME,DownloadService,DIRECT
+  - PROCESS-NAME,qBittorrent,DIRECT
+  - PROCESS-NAME,Transmission,DIRECT
+  - PROCESS-NAME,fdm,DIRECT
+  - PROCESS-NAME,aria2c,DIRECT
+  - PROCESS-NAME,Folx,DIRECT
+  - PROCESS-NAME,NetTransport,DIRECT
+  - PROCESS-NAME,uTorrent,DIRECT
+  - PROCESS-NAME,WebTorrent,DIRECT
+  - PROCESS-NAME,MEmu.exe,PROXY
+  - PROCESS-NAME,Telegram.exe,Telegram  
+
+  # 社交媒体
+  - DOMAIN-SUFFIX,aca.best,TikTok
+  - RULE-SET,instagram_domain,Instagram
+  - RULE-SET,tiktok_domain,TikTok
+  - RULE-SET,facebook_domain,YouTube
+  - RULE-SET,whatsapp_domain,Whatsapp
+  - RULE-SET,threads_domain,Whatsapp
+  - RULE-SET,meta_domain,Whatsapp
+  - RULE-SET,line_domain,Whatsapp
+  - RULE-SET,signal_domain,Whatsapp
+  - RULE-SET,wechat_domain,DIRECT
+  - RULE-SET,discord_domain,Whatsapp
+  - RULE-SET,talkatone_domain,Whatsapp
+  - RULE-SET,media!cn_domain,PROXY
+  - RULE-SET,facebook_ip,YouTube,no-resolve
+  - RULE-SET,twitter_ip,Twitter,no-resolve
+  - RULE-SET,talkatone_ip,Whatsapp,no-resolve
+  - RULE-SET,discord_asn,Whatsapp,no-resolve
+  - RULE-SET,wechat_asn,DIRECT,no-resolve
+
+  # 流媒体
+  - RULE-SET,youtube_domain,YouTube
+  - DOMAIN-SUFFIX,youtubemy.com,YouTube
+  - RULE-SET,youtubemusic,YouTube
+  - RULE-SET,netflix_domain,Netflix
+  - RULE-SET,disney_domain,Disney
+  - RULE-SET,hbo_domain,HBO
+  - RULE-SET,primevideo_domain,YouTube
+  - RULE-SET,spotify_domain,Spotify
+  - RULE-SET,emby_domain,Emby
+  - RULE-SET,twitch_domain,PROXY
+  - RULE-SET,appleTV_domain,Apple
+  - RULE-SET,TVB_domain,YouTube
+  - RULE-SET,iptv_domain,DIRECT
+  - RULE-SET,bilibili_domain,Bilibili
+  - RULE-SET,biliintl_domain,Bilibili
+  - DOMAIN-SUFFIX,bilibili.com,Bilibili
+  - DOMAIN-SUFFIX,bilivideo.com,Bilibili
+  - DOMAIN-SUFFIX,biliapi.com,Bilibili
+  - DOMAIN-SUFFIX,biliapi.net,Bilibili
+  - RULE-SET,bahamut_domain,YouTube
+  - RULE-SET,media_cn_domain,DIRECT
+  - RULE-SET,netflix_ip,Netflix,no-resolve
+  - RULE-SET,emby_ip,Emby,no-resolve
+  - DOMAIN-SUFFIX,baidu.com,DIRECT
+  - DOMAIN-SUFFIX,bdstatic.com,DIRECT
+  # 电商
+  - RULE-SET,Amazon_domain,Netflix
+  - RULE-SET,Shopee_domain,Netflix
+  - RULE-SET,ebay_domain,Netflix
+  - RULE-SET,Shopify_domain,Netflix
+  - RULE-SET,Amazon_ip,Netflix,no-resolve
+
+  # 游戏
+  - RULE-SET,steam_domain,Steam
+  - RULE-SET,steam_cn_domain,DIRECT
+  - RULE-SET,steamcdn_domain,DIRECT
+  - RULE-SET,Epic_domain,PROXY
+  - RULE-SET,EA_domain,PROXY
+  - RULE-SET,Blizzard_domain,PROXY
+  - RULE-SET,UBI_domain,PROXY
+  - RULE-SET,Sony_domain,PROXY
+  - RULE-SET,Nintendo_domain,PROXY
+  - RULE-SET,steamcdn_ip,DIRECT,no-resolve
+
+  # 人工智能
+  - DOMAIN-SUFFIX,anthropic.com,OpenAI
+  - RULE-SET,openai_domain,OpenAI
+  - RULE-SET,ai!cn_domain,OpenAI
+  - RULE-SET,ai_domain,OpenAI
+  - RULE-SET,claude,OpenAI
+  - RULE-SET,slack,DIRECT
+  - RULE-SET,ai_cn_domain,DIRECT
+  - RULE-SET,ai_ip,OpenAI,no-resolve
+
+  # 科技公司
+  - RULE-SET,apple_domain,Apple
+  - RULE-SET,applle,Apple
+  - RULE-SET,apple_cn_domain,DIRECT
+  - RULE-SET,apple_firmware_domain,Apple
+  - RULE-SET,github_domain,PROXY
+  - RULE-SET,microsoft_domain,Microsoft
+  - RULE-SET,onedrive_domain,Microsoft
+  - RULE-SET,Cloudflare_domain,PROXY
+  - RULE-SET,fcm_domain,PROXY
+  - RULE-SET,alibaba_domain,DIRECT
+  - RULE-SET,aliyun_domain,DIRECT
+  - RULE-SET,xiaomi_domain,DIRECT
+
+  # 金融
+  - RULE-SET,paypal_domain,PROXY
+  - RULE-SET,Wise_domain,PROXY
+  - RULE-SET,ifast_domain,DIRECT
+  - RULE-SET,bank_cn_domain,DIRECT
+
+  # 下载与文件分享
+  - RULE-SET,Download_rule,Download
+  - RULE-SET,115_domain,DIRECT
+  - RULE-SET,pt_cn_domain,DIRECT
+  - RULE-SET,public-tracker_domain,DIRECT
+  - RULE-SET,NetEaseMusic_domain,DIRECT
+  - RULE-SET,NetEaseMusic_ip,DIRECT,no-resolve
+
+  # 其他域名规则
+  - DOMAIN-SUFFIX,cloudlion.me,PROXY
+  - DOMAIN-SUFFIX,memuplay.com,PROXY
+  - DOMAIN-SUFFIX,nodeseek.com,PROXY
+  - DOMAIN-SUFFIX,v2rayssr.com,PROXY
+  
+  # 其他规则集
+  - RULE-SET,speedtest_domain,PROXY
+  - RULE-SET,gitbook_domain,PROXY
+  - RULE-SET,porn_domain,PROXY
+
+  # 国内直连规则靠前
+  - RULE-SET,applications,DIRECT
+  - RULE-SET,private_domain,DIRECT
+  - RULE-SET,direct_domain,DIRECT
+  - RULE-SET,cn_domain,DIRECT
+  - RULE-SET,cn_ip,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  
+    # 国外代理规则
+  - RULE-SET,gfw_domain,PROXY
+  - RULE-SET,geolocation-!cn,PROXY
+  - RULE-SET,proxy_domain,PROXY 
+  - DOMAIN-SUFFIX,xiangqi.com,PROXY
+  
+  # 默认规则
+  - MATCH,PROXY
