@@ -1,0 +1,286 @@
+# 以下三行分别表示了配置名、更新时间、作者，暂无实际用处
+# 
+#default configure
+#Update Date: 2025年12月14日12:53:49
+#author: Loon
+
+[General]
+# > IPv6 支持（默认关闭）
+ipv6 = false
+# > 跳过代理
+skip-proxy = 192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,localhost,*.local,e.crashlynatics.com
+# > 旁路隧道
+bypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32
+# 自定义 DNS 服务器，Loon 会优先使用自定义 DNS，若丢包严重，会切回系统自带的 DNS，使用 , 分割多个 DNS 地址
+dns-server = system,119.29.29.29,223.5.5.5
+# > wifi 访问
+allow-wifi-access = false
+# > wifi 访问（http 端口）
+wifi-access-http-port = 7222
+# > wifi 访问（socket5 端口）
+wifi-access-socks5-port = 7221
+# > 代理测试网址
+proxy-test-url = http://www.gstatic.com/generate_204
+# > 测试超时
+test-timeout = 3
+# 使用真实 IP
+real-ip = *.lan, cable.auth.com, *.msftconnecttest.com, *.msftncsi.com, network-test.debian.org, detectportal.firefox.com, resolver1.opendns.com, *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, stun.*, global.turn.twilio.com, global.stun.twilio.com, localhost.*.qq.com, *.logon.battlenet.com.cn, *.logon.battle.net, *.blzstatic.cn, *.cmpassport.com, id6.me, open.e.189.cn, mdn.open.wo.cn, opencloud.wostore.cn, auth.wosms.cn, *.jegotrip.com.cn, *.icitymobile.mobi, *.pingan.com.cn, *.cmbchina.com, *.cmbchina.com.cn, *?miwifi.com, pool.ntp.org, *.pool.ntp.org, ntp.*.com, time.*.com, ntp?.*.com, time?.*.com, time.*.gov, time.*.edu.cn, *.ntp.org.cn, time.*.apple.com, PDC._msDCS.*.*, DC._msDCS.*.*, GC._msDCS.*.*
+# > 资源解析器
+# resource-parser = https://raw.githubusercontent.com/Peng-YM/Sub-Store/master/backend/dist/sub-store-parser.loon.min.js
+
+[Host]
+#可以使用以下四种模式：
+# 1 指定域名使用对应的IP地址
+# 2 将域名指向另一个域名
+# 3 指定域名请求DNS时使用特定的DNS服务器，格式为：google.com = server:8.8.8.8 或者 *.baidu.com = server:https://example.com/dns-query
+# 4 指定具体的SSID环境下使用特定的DNS服务器
+*.taobao.com = server:223.5.5.5
+*.tmall.com = server:223.5.5.5
+*.jd.com = server:119.28.28.28
+*.qq.com = server:119.28.28.28
+*.tencent.com = server:119.28.28.28
+*.alicdn.com = server:223.5.5.5
+*.aliyun.com = server:223.5.5.5
+*.weixin.com = server:119.28.28.28
+*.163.com = server:119.29.29.29
+*.126.com = server:119.29.29.29
+*.126.net = server:119.29.29.29
+*.127.net = server:119.29.29.29
+*.netease.com = server:119.29.29.29
+*.mi.com = server:119.29.29.29
+*.xiaomi.com = server:119.29.29.29
+*.bilibili.com = server:119.29.29.29
+*testflight.apple.com = server:8.8.4.4
+mtalk.google.com = server:108.177.125.188
+dl.google.com = server:119.29.29.29
+dl.l.google.com = server:119.29.29.29
+
+[Proxy]
+# 单个节点添加在下面
+# SS 格式: 节点名称 = 协议，服务器地址，服务器端口，加密协议，密码
+# 1 = Shadowsocks, 1.2.3.4, 443, aes-128-gcm, "password"
+# 2 = Shadowsocks, 1.2.3.4, 443, aes-128-gcm, "password"
+
+# SSR 格式: 名称=协议类型,地址,端口,加密方式,密码,协议类型,{协议参数},混淆类型,{混淆参数}
+# 3 = ShadowsocksR, 1.2.3.4, 443, aes-256-cfb,"password",auth_aes128_md5,{},tls1.2_ticket_auth,{}
+# 4 = ShadowsocksR, 1.2.3.4, 10076, aes-128-cfb,"password",auth_aes128_md5,{},tls1.2_ticket_auth,{}
+
+# vmess格式
+# 节点名称 = 协议,服务器地址,端口,加密方式,UUID,传输方式:(tcp/ws),path:websocket握手header中的path,host:websocket握手header中的path,over-tls:是否tls,tls-name:远端w服务器域名,skip-cert-verify:是否跳过证书校验（默认否）
+# 5 = vmess,1.2.3.4,10086,aes-128-gcm,"uuid",transport:ws,path:/,host:icloud.com,over-tls:true,tls-name:youtTlsServerName.com,skip-cert-verify:false
+
+# http 格式 (不支持 username, password)
+# 节点名称 = http, 服务器地址，端口
+ProxyHTTP = http, 1.2.3.4, 8888
+
+[Remote Proxy]
+# 远程节点订阅，默认开启解析器后，如出现无法导入情况请关闭解析器后再导入机场订阅
+# 机场名(可改为你喜欢的名字) = 订阅URL
+# 若加入3个以上的订阅，请在 [Remote Filter]下每个节点过滤分组加入新的机场组，[Proxy Group]下Proxy以及延迟最低策略组同理
+# > Sub-Store订阅，Sub-Store用户可自行替换自己的Sub-Store订阅链接，方便多机场用户
+# MySub = https://sub.store/download/collection/MySub,parser-enable = true,udp=true,fast-open=true,vmess-aead=true
+A = https://,parser-enable = true,udp=true,fast-open=true,vmess-aead=true,update-interval=86400
+B = https://,parser-enable = true,udp=true,fast-open=true,vmess-aead=true,update-interval=86400
+C = https://,parser-enable = true,udp=true,fast-open=true,vmess-aead=true,update-interval=86400
+D = https://,parser-enable = true,udp=true,fast-open=true,vmess-aead=true,update-interval=86400
+
+[Remote Filter]
+# 筛选订阅节点，筛选后的结果可加入到策略组中，目前支持三种筛选方式
+# NodeSelect: 使用在UI上选择的节点。
+# NameKeyword: 根据提供的关键词对订阅中所有节点的名称进行筛选，使用筛选后的节点。
+# NameRegex: 根据提供的正则表达式对订阅中所有节点的名称进行筛选，使用筛选后的节点。
+全部 = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "|"
+HK = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(港|HK|Hong|湾仔|港仔|九龙)"
+TW = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(台|TW|Tai|台北|新竹|台中|桃园|台南|高雄|花莲)"
+US = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)"
+SG = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(新加坡|SG|Singapore)"
+UK = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(英国|UK|伦敦)"
+RU = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(俄罗斯|RU|莫斯科|圣彼得堡|喀山|哈尔科夫|乌法|新西伯利亚|下诺夫哥罗德|沃罗涅什|Russia)"
+JP = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan|名古屋|福冈|仙台|京都|Japan)"
+KR = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(KR|Korea|KOR|首尔|韩|韓|南韩|南朝鲜|釜山|South Korea)"
+TU = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(土耳其|TU|Turkey)"
+IN = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(印度|IN|IND|孟买|新德里|高知|Republic of India|India)"
+DE = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(德国|DEU|DE|柏林|慕尼黑|汉堡|科隆|Germany)"
+CA = NameRegex, JF,YHM,DJS,BJ,FQM,FP,PPG,XY,DHH,GG,PF,FilterKey = "(?i)(加拿大|CA|渥太华)"
+
+[Proxy Group]
+# 以下为策略组定义
+# 支持 select、url-test、fallback、ssid 这几种类型
+Proxy = select,全部,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png
+Google = select,US,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png
+Linkedin = select,Proxy,HK香港,TW台湾,US美国,SG新加坡,RU俄罗斯,UK英国,KR韩国,JP日本,url = http://cp.cloudflare.com/generate_204,interval = 600,max-timeout = 3000,algorithm = random,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Linkedin.png
+Telegram = select,Proxy,HK香港,TW台湾,US美国,SG新加坡,RU俄罗斯,UK英国,KR韩国,JP日本,url = http://cp.cloudflare.com/generate_204,interval = 600,max-timeout = 3000,algorithm = random,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png
+YouTube = select,Proxy,HK香港,TW台湾,US美国,SG新加坡,RU俄罗斯,JP日本,KR韩国,UK英国,url = http://cp.cloudflare.com/generate_204,interval = 300,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
+Netflix = select,Proxy,HK香港,TW台湾,US美国,SG新加坡,JP日本,KR韩国,TU土耳其,UK英国,url = http://cp.cloudflare.com/generate_204,interval = 600,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix_Letter.png
+Disney = select,Proxy,TW台湾,HK香港,SG新加坡,US美国,JP日本,url = http://cp.cloudflare.com/generate_204,interval = 600,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney+.png
+国外流媒体 = select,Proxy,HK香港,TW台湾,SG新加坡,JP日本,KR韩国,US美国,RU俄罗斯,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Asia_Map.png
+国内流媒体 = select,DIRECT,HK香港,TW台湾,JP日本,KR韩国,US美国,SG新加坡,RU俄罗斯,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China_Map.png
+国外社交平台 = select,Proxy,DIRECT,HK香港,TW台湾,US美国,SG新加坡,RU俄罗斯,JP日本,KR韩国,TU土耳其,UK英国,IN印度,DE德国,CA加拿大,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Facebook.png
+国内社交平台 = select,DIRECT,HK香港,TW台湾,US美国,SG新加坡,JP日本,KR韩国,TU土耳其,UK英国,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/QQ.png
+游戏平台 = select,Proxy,HK香港,TW台湾,US美国,SG新加坡,RU俄罗斯,JP日本,KR韩国,TU土耳其,UK英国,IN印度,DE德国,CA加拿大,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
+微软服务 = select,Proxy,HK香港,TW台湾,US美国,SG新加坡,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png
+苹果服务 = select,DIRECT,TU土耳其,JP日本,KR韩国,RU俄罗斯,SG新加坡,US美国,TW台湾,HK香港,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png
+HK香港 = select,HK,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
+TW台湾 = select,TW,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
+US美国 = select,US,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
+SG新加坡 = select,SG,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
+JP日本 = select,JP,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
+KR韩国 = select,KR,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png
+UK英国 = select,UK,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_Kingdom.png
+RU俄罗斯 = select,RU,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Russia.png
+TU土耳其 = select,TU,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Turkey.png
+IN印度 = select,IN,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/India.png
+DE德国 = select,DE,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Germany.png
+CA加拿大 = select,CA,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 100,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Canada.png
+
+[Rule]
+# 本地分流规则:相同规则下本地规则优先生效
+# 绕过企业证书过期
+DOMAIN,ocsp.apple.com,REJECT
+
+DOMAIN-SUFFIX,linkedin.com,Linkedin
+DOMAIN-SUFFIX,newyun.top,PROXY
+DOMAIN-SUFFIX,shiyuanyinian.xyz,PROXY
+DOMAIN-SUFFIX,fishport.cloud,PROXY
+DOMAIN-SUFFIX,5sim.net,PROXY
+DOMAIN-SUFFIX,fucknvidia.link,PROXY
+DOMAIN-SUFFIX,loseprivacy.net,PROXY
+DOMAIN-SUFFIX,iphey.com,Linkedin
+DOMAIN,e122475.dscg.akamaiedge.net,Linkedin
+DOMAIN,licdn.cn.cdn20.com,Linkedin
+DOMAIN,linkedin.sc.omtrdc.net,Linkedin
+DOMAIN-SUFFIX,bizographics.com,Linkedin
+DOMAIN-SUFFIX,l-0005.dc-msedge.net,Linkedin
+DOMAIN-SUFFIX,l-0005.l-msedge.net,Linkedin
+DOMAIN-SUFFIX,licdn.cn,Linkedin
+DOMAIN-SUFFIX,licdn.com,Linkedin
+DOMAIN-SUFFIX,linkedin.at,Linkedin
+DOMAIN-SUFFIX,linkedin.cn,Linkedin
+DOMAIN-SUFFIX,linkedin.com,Linkedin
+DOMAIN-SUFFIX,lnkd.in,Linkedin
+DOMAIN-SUFFIX,bgp.he.net,Linkedin
+DOMAIN-SUFFIX,ping0.cc,Linkedin
+DOMAIN-SUFFIX,google.com,Google
+DOMAIN-KEYWORD,google,Google
+DOMAIN-SUFFIX,browserleaks.com,Google
+DOMAIN-SUFFIX,openai.com,Google
+DOMAIN-SUFFIX,ipinfo.io,Google
+DOMAIN-SUFFIX,ip123.in,Google
+DOMAIN-SUFFIX,scamalytics.com,Google
+DOMAIN-SUFFIX,ip-score.com,Google
+DOMAIN-SUFFIX,dnsleaktest.com,Linkedin
+DOMAIN-SUFFIX,ipleak.net,PROXY
+DOMAIN-SUFFIX,browserleaks.com,PROXY
+DOMAIN-SUFFIX,jinglongyu.com,PROXY
+DOMAIN-SUFFIX,theb.ai,Google
+DOMAIN-SUFFIX,ip.skk.moe,PROXY
+DOMAIN-SUFFIX,ip233.cn,PROXY
+DOMAIN-SUFFIX,ipdata.co,PROXY
+DOMAIN-SUFFIX,ip.me,PROXY
+DOMAIN-SUFFIX,iplocation.com,PROXY
+DOMAIN-SUFFIX,whoer.net,Google
+DOMAIN-SUFFIX,zimoceng.xyz,PROXY
+DOMAIN-SUFFIX,qij.me,PROXY
+DOMAIN-SUFFIX,jamesdailylife.com,PROXY
+DOMAIN-SUFFIX,bulianglin.com,PROXY
+DOMAIN-SUFFIX,haotas.com,PROXY
+DOMAIN-SUFFIX,zimoceng.xyz,PROXY
+DOMAIN-SUFFIX,91unicorn.cloud,Linkedin
+DOMAIN-SUFFIX,goflyint.com,PROXY
+DOMAIN-SUFFIX,jinglongyu.com,PROXY
+DOMAIN-SUFFIX,bajie.info,PROXY
+DOMAIN-SUFFIX,bajie.one,PROXY
+DOMAIN-SUFFIX,tagss01.pro,PROXY
+DOMAIN-SUFFIX,anthropic.com,PROXY
+DOMAIN-SUFFIX,slack.com,Google
+DOMAIN-SUFFIX,theb.ai,Google
+DOMAIN-SUFFIX,poe.com,Google
+DOMAIN-SUFFIX,degyax.com,PROXY
+DOMAIN-SUFFIX,eggtartcloud.shop,PROXY
+
+# 常规
+DOMAIN-KEYWORD,Netflix,Netflix
+DOMAIN-KEYWORD,Google,Google
+DOMAIN-KEYWORD,qq.com,DIRECT
+DOMAIN-KEYWORD,YouTube,YouTube
+DOMAIN-KEYWORD,bilibili,DIRECT
+
+# 其它
+DOMAIN-SUFFIX,local,DIRECT
+URL-REGEX,(Subject|HELO|SMTP),DIRECT
+DOMAIN-KEYWORD,announce,DIRECT
+DOMAIN-KEYWORD,torrent,DIRECT
+DOMAIN-KEYWORD,tracker,DIRECT
+DOMAIN-KEYWORD,yattazen,Proxy
+DOMAIN-SUFFIX,smtp,DIRECT
+
+IP-CIDR,10.0.0.0/8,DIRECT
+IP-CIDR,17.0.0.0/8,DIRECT
+IP-CIDR,100.64.0.0/10,DIRECT
+IP-CIDR,127.0.0.0/8,DIRECT
+IP-CIDR,172.16.0.0/12,DIRECT
+IP-CIDR,192.168.0.0/16,DIRECT
+
+# GeoIP 为中国的，走直连
+GEOIP,CN,DIRECT
+
+# 白名单模式 PROXY，黑名单模式 DIRECT
+Final = select,PROXY,DIRECT
+
+[Remote Rule]
+# 远程规则部分书写在下面
+# 格式为 订阅规则 URL,策略
+# 
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/LinkedIn/LinkedIn.list, policy=Linkedin, tag=Linkedin, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Google/Google.list, policy=Google, tag=Google, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Telegram/Telegram.list, policy=Telegram, tag=Telegram, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Whatsapp/Whatsapp.list, policy=国外社交平台, tag=WhatsApp, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/OpenAI/OpenAI.list, policy=Google, tag=OpenAI, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/HBO/HBO.list, policy=国外流媒体, tag=HBO, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Bahamut/Bahamut.list, policy=TW台湾, tag=巴哈姆特, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Douyu/Douyu.list, policy=国内流媒体, tag=斗鱼, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/DouYin/DouYin.list, policy=国内流媒体, tag=抖音, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/TikTok/TikTok.list, policy=国外流媒体, tag=TikTok, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Baidu/Baidu.list, policy=DIRECT, tag=百度, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/AppleProxy/AppleProxy.list, policy=苹果服务, tag=苹果代理, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/GoogleVoice/GoogleVoice.list, policy=US美国, tag=GV电话, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/iCloud/iCloud.list, policy=苹果服务, tag=iCloud, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/YouTubeMusic/YouTubeMusic.list, policy=YouTube, tag=YouTube music, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/AppleMusic/AppleMusic.list, policy=苹果服务, tag=Apple音乐, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/AppStore/AppStore.list, policy=苹果服务, tag=App Store, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/WeChat/WeChat.list, policy=国内社交平台, tag=微信, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Blizzard/Blizzard.list, policy=游戏平台, tag=暴雪, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Steam/Steam.list, policy=游戏平台, tag=steam, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/PayPal/PayPal.list, policy=Proxy, tag=paypal, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Facebook/Facebook.list, policy=国外社交平台, tag=Facebook, enabled=true
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/StreamingMedia/StreamingSE.list, policy=国内流媒体, tag=哔哩哔哩, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Weibo/Weibo.list, policy=国内社交平台, tag=微博, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Twitter/Twitter.list, policy=国外社交平台, tag=twitter, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Twitch/Twitch.list, policy=国外流媒体, tag=Twitch, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Netflix/Netflix.list, policy=Netflix, tag=Netflix, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Disney/Disney.list, policy=Disney, tag=Disney+, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/GitHub/GitHub.list, policy=Proxy, tag=GitHub, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Discord/Discord.list, policy=HK香港, tag=discord, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/China/China.list, policy=DIRECT, tag=china, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Apple/Apple.list, policy=苹果服务, tag=Apple, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/YouTube/YouTube.list, policy=YouTube, tag=YouTube, enabled=true
+https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list, policy=DIRECT, tag=中国大陆A, enabled=true
+https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list, policy=DIRECT, tag=中国大陆B, enabled=true
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/ChinaIPs/ChinaIPs.list, policy=DIRECT, tag=中国IP, enabled=true
+
+[URL Rewrite]
+# URL 重写开关，为 true 表示开启
+enable = true
+
+# 本地重写规则部分书写在下面
+#
+# 302 重定向 google search
+^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
+
+[Remote Rewrite]
+# 远程重写规则部分书写在下面
+# 格式为 远程重写规则 URL,别名(可选)
+
+[MITM]
+enable = false
+skip-server-cert-verify = true
